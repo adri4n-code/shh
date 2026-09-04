@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>shhhhhh</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Karla:wght@400;500&display=swap');
+
+  :root{
+    --clay: #A9765F;
+    --moss: #5C6B4F;
+    --linen: #F1ECE2;
+    --ink: #2B2620;
+    --stone: #C9C0AE;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin:0;
+    padding:0;
+    height:100%;
+    width:100%;
+    overflow: hidden;
+    background: var(--linen);
+    color: var(--ink);
+    font-family: 'Karla', sans-serif;
+  }
+
+  .intro{
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    text-align: center;
+    padding: 48px 24px 0;
+  }
+
+  h1{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.9rem;
+    line-height: 1.2;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  #btn{
+    position: absolute;
+    background: var(--clay);
+    color: var(--linen);
+    border: none;
+    font-family: 'Karla', sans-serif;
+    font-weight: 500;
+    font-size: 1.02rem;
+    padding: 16px 40px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: transform 0.18s ease, background 0.2s ease;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -50%);
+  }
+
+  #btn:hover{
+    background: #8F6350;
+  }
+
+  #btn:focus-visible{
+    outline: 2px solid var(--moss);
+    outline-offset: 3px;
+  }
+
+  #btn.caught{
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+
+  .fade-out{
+    animation: fadeOut 0.6s ease forwards;
+  }
+
+  @keyframes fadeOut{
+    to{ opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    #btn{ transition: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="intro" id="intro">
+    <h1>shhhhhh</h1>
+  </div>
+
+  <button id="btn">Ábreme</button>
+
+  <script>
+    const btn = document.getElementById('btn');
+
+    const TARGET = 24;
+    let clicks = 0;
+
+    const messages = [
+      'Ábreme', 'Casi...', 'Otra vez', '¡Sigue!', 'No te rindas',
+      'Vas bien', 'Un poco más', 'Ya casi', 'Insiste', 'Vamos'
+    ];
+
+    function randomPosition(){
+      const margin = 80;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const btnW = btn.offsetWidth;
+      const btnH = btn.offsetHeight;
+
+      const x = Math.random() * (w - btnW - margin * 2) + margin + btnW / 2;
+      const y = Math.random() * (h - btnH - margin * 2) + margin + btnH / 2;
+
+      btn.style.left = x + 'px';
+      btn.style.top = y + 'px';
+    }
+
+    btn.addEventListener('click', () => {
+      clicks++;
+
+      if (clicks >= TARGET) {
+        btn.textContent = '✓';
+        btn.classList.add('caught');
+        document.body.classList.add('fade-out');
+        setTimeout(() => {
+          window.location.href = 'cupon.pdf';
+        }, 650);
+        return;
+      }
+
+      btn.textContent = messages[clicks % messages.length];
+      randomPosition();
+    });
+
+    window.addEventListener('resize', () => {
+      if (clicks > 0 && clicks < TARGET) randomPosition();
+    });
+  </script>
+
+</body>
+</html>
